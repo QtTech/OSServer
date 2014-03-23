@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans     
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc.xsd
+	http://www.springframework.org/schema/task 
+	http://www.springframework.org/schema/task/spring-task-3.0.xsd"
+	xmlns:p="http://www.springframework.org/schema/p">
+	
+	<context:annotation-config />
+	<context:component-scan base-package="com.bronze.ordersystem" />
+
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<!-- 
+		<property name="locations" value="classpath:/config/database.properties" />
+		-->
+		<property name="locations">
+			<list>
+				<value>classpath:/config/database.properties</value>
+				<value>classpath:/config/configuration.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 配置定时器 -->
+	<!-- 
+	<bean></bean>  
+	<task:annotation-driven />
+	<task:scheduled-tasks>
+		<task:scheduled ref="msgTask" method="sendMSGTask" cron="${task.cron}"/>
+	</task:scheduled-tasks>
+ 	-->
+ 	
+	<!--配置数据源 -->
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName">
+			<value>${jdbc.driverClassName}</value>
+		</property>
+		<property name="url">
+			<value>${jdbc.url}</value>
+		</property>
+		<property name="username">
+			<value>${jdbc.username}</value>
+		</property>
+		<property name="password">
+			<value>${jdbc.password}</value>
+		</property>
+	</bean>
+	
+	<bean id="mqttconfig" class="com.bronze.ordersystem.common.util.MQTTConfig">
+		<property name="host">
+			<value>${mqtt.host}</value>
+		</property>
+		<property name="port">
+			<value>${mqtt.port}</value>
+		</property>
+		<property name="admin">
+			<value>${mqtt.admin}</value>
+		</property>
+		<property name="password">
+			<value>${mqtt.password}</value>
+		</property>
+	</bean>
+	
+	<!-- JNDI -->
+	<!-- 
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:comp/env/connTest"></property>
+	</bean> 
+	-->
+
+	<!-- 
+		1.SqlSessionFactoryBean (必需) 就是中间件所需的处理类 
+		2.dataSource (必需) spring中数据源引用 
+		3.configLocation (可选) Mybatis自身的配置文件，一般用来声明别名 
+		4.mapperLocation (可选) mybatis的映射文件 
+		5.typeAliasesPackage (可选) 要映射类的包路径，如果使用了这种方式，则configLocation中不必再进行声明 
+	-->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:/config/mybatisConfiguration.xml" />
+		<property name="mapperLocations">
+			<list>
+				<value>classpath:/config/mapper/*.xml</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="userLoginDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface"
+			value="com.bronze.ordersystem.login.dao.IUserLoginDao" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	
+	<bean id="foodInfoDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface"
+			value="com.bronze.ordersystem.food.dao.IFoodInfoDao" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	
+	<bean id="billDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface"
+			value="com.bronze.ordersystem.bill.dao.IBillDao" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	
+	<bean id="categoryListDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface"
+			value="com.bronze.ordersystem.food.dao.ICategoryListDao" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	
+	<bean id="foodCategoryDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface"
+			value="com.bronze.ordersystem.food.dao.IFoodCategoryDao" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	
+	<bean id="foodOrderableDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface"
+			value="com.bronze.ordersystem.food.dao.IFoodOrderableDao" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	
+	<bean id="foodRecommendDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface"
+			value="com.bronze.ordersystem.food.dao.IFoodRecommendDao" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	
+	<bean id="foodSpecialRemarkDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface"
+			value="com.bronze.ordersystem.food.dao.IFoodSpecialRemarkDao" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	
+	<bean id="attachmentDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface"
+			value="com.bronze.ordersystem.attachment.dao.IAttachmentDao" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+</beans>

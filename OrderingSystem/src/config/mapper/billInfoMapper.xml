@@ -1,0 +1,559 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.bronze.ordersystem.bill.dao.IBillDao">
+	<resultMap type="UncheckedBill" id="uncheckedBillMap">
+		<id property="id" column="id" />
+		<result property="runningnumber" column="runningnumber" />
+		<result property="type" column="type" />
+		<result property="originalprice" column="originalprice" />
+		<result property="discount" column="discount" />
+		<result property="deduction" column="deduction" />
+		<result property="realprice" column="realprice" />
+		<result property="starttime" column="starttime" />
+		<result property="endtime" column="endtime" />
+		<result property="tableid" column="tableid" />
+		<result property="waitername" column="waitername" />
+		<result property="people" column="people" />
+		<result property="remark" column="remark" />
+	</resultMap>
+	
+	<resultMap type="UncheckedBillDetails" id="uncheckedBillDetailsMap">
+		<id property="id" column="id" />
+		<result property="billtempid" column="billtempid" />
+		<result property="type" column="type" />
+		<result property="foodid" column="foodid" />
+		<result property="foodname" column="foodname" />
+		<result property="amount" column="amount" />
+		<result property="price" column="price" />
+		<result property="state" column="state" />
+		<result property="remark" column="remark" />
+	</resultMap>
+	
+	<resultMap type="AllCookingInfo" id="allCookingInfoMap">
+		<id property="id" column="id" />
+		<result property="billtempid" column="billtempid" />
+		<result property="type" column="type" />
+		<result property="foodid" column="foodid" />
+		<result property="foodname" column="foodname" />
+		<result property="amount" column="amount" />
+		<result property="price" column="price" />
+		<result property="state" column="state" />
+		<result property="remark" column="remark" />
+		<result property="tableid" column="tableid" />
+		<result property="starttime" column="starttime" />
+		<result property="billremark" column="billremark" />
+	</resultMap>
+	
+	<resultMap type="Discount" id="discountMap">
+		<id property="id" column="id" />
+		<result property="discount" column="discount" />
+		<result property="deduction" column="deduction" />
+		<result property="type" column="type" />
+	</resultMap>
+	
+	<resultMap type="BillSpecialRemark" id="billSpecialRemarkMap">
+		<id property="id" column="id"/>
+		<result property="name" column="name" />
+	</resultMap>
+	
+	<resultMap type="AccountReconciliation" id="accountReconciliationMap">
+		<id property="id" column="id" />
+		<result property="pic" column="pic" />
+		<result property="time" column="time" />
+		<result property="receivables" column="receivables" />
+		<result property="paidinCapital" column="paidinCapital" />
+		<result property="balance" column="balance" />
+		<result property="currentEdit" column="currentEdit" />
+	</resultMap>
+	
+	<resultMap type="CheckedBill" id="checkedBillMap">
+		<id property="id" column="id" />
+		<result property="runningnumber" column="runningnumber" />
+		<result property="type" column="type" />
+		<result property="originalprice" column="originalprice" />
+		<result property="discount" column="discount" />
+		<result property="deduction" column="deduction" />
+		<result property="realprice" column="realprice" />
+		<result property="starttime" column="starttime" />
+		<result property="endtime" column="endtime" />
+		<result property="tableid" column="tableid" />
+		<result property="waitername" column="waitername" />
+		<result property="people" column="people" />
+		<result property="remark" column="remark" />
+	</resultMap>	
+	
+	<resultMap type="DishStatistics" id="dishStatisticsMap">
+		<id property="foodname" column="foodname"/>
+		<result property="amount" column="amount"/>
+	</resultMap>
+	
+	<insert id="createNewBillTemp" parameterType="UncheckedBill" flushCache="true">
+		insert into OSBillTemp values
+		(#{id}, #{runningnumber}, #{type}, 0, 0, 0, 0, now(), null, 
+		 #{tableid}, #{waitername}, #{people}, #{remark})
+	</insert>
+	
+	<select id="queryBillByTableId" parameterType="UncheckedBill" resultMap="uncheckedBillMap" flushCache="true">
+		select * from OSBillTemp where tableid = #{tableid}
+	</select>
+	
+	<select id="queryBillById" parameterType="UncheckedBill" resultMap="uncheckedBillMap" flushCache="true">
+		select * from OSBillTemp
+		<where>
+			<if test="id != null and id != ''">
+				id = #{id}
+			</if>
+		</where>
+	</select>
+	
+	<select id="queryBillByDetailID" parameterType="UncheckedBillDetails" resultMap="uncheckedBillMap" flushCache="true">
+		select OSBillTemp.* from OSBillTemp, OSBillDetailsTemp
+		<where>
+			OSBillTemp.id in 
+			(select OSBillDetailsTemp.billtempid from OSBillDetailsTemp 
+			<where>
+				OSBillDetailsTemp.id = #{id}
+			</where>
+			)
+			and 
+			OSBillDetailsTemp.id = #{id}
+		</where>
+	</select>
+	
+	<update id="updateBillTemp" parameterType="UncheckedBill" flushCache="true">
+		update OSBillTemp
+		<set>
+		<if test="originalprice != null">
+			originalprice = #{originalprice},
+		</if>
+		<if test="realprice != null">
+			realprice = #{realprice},
+		</if>
+		<if test="remark != null">
+			remark = #{remark}
+		</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<insert id="addBillDetailsTemp" parameterType="UncheckedBillDetails" flushCache="true">
+		insert into OSBillDetailsTemp values (#{id}, #{billtempid}, #{type}, #{foodid}, 
+		#{foodname}, #{amount}, #{price}, #{state}, #{remark})
+	</insert>
+	
+	<select id="queryBillDetailsTempByTableId" parameterType="TableInfo" resultMap="uncheckedBillDetailsMap" flushCache="true">
+		<![CDATA[
+			select OSBillDetailsTemp.* from OSBillDetailsTemp, OSBillTemp where OSBillTemp.tableid = #{id} and
+			OSBillDetailsTemp.billtempid = OSBillTemp.id 
+		]]>
+	</select>
+	
+	<select id="queryBDTViaTableIdAndCookBy" parameterType="TableInfo" resultMap="uncheckedBillDetailsMap" flushCache="true">
+			select OSBillDetailsTemp.* from OSBillDetailsTemp, OSBillTemp, OSFood
+			<where>
+			OSBillDetailsTemp.billtempid = OSBillTemp.id
+			and OSFood.id = OSBillDetailsTemp.foodid
+			<if test="cookby == 0 or cookby == 1">
+				and OSFood.cookby = #{cookby}
+			</if>
+			<if test="id != null and id != ''">
+				and OSBillTemp.tableid = #{id}
+			</if>
+			<if test="billid != null and billid != ''">
+				and OSBillTemp.id = #{billid}
+			</if>
+			</where>
+	</select>
+	
+	<select id="queryBDTViaBillID" parameterType="java.lang.String" resultMap="uncheckedBillDetailsMap" flushCache="true">
+		select * from OSBillDetailsTemp where OSBillDetailsTemp.billtempid = #{id}
+	</select>
+	
+	<select id="queryBillDetailsTempByID" parameterType="UncheckedBillDetails" resultMap="uncheckedBillDetailsMap" flushCache="true">
+		select * from OSBillDetailsTemp where id = #{id}
+	</select>
+	
+	<select id="queryFoodStates" parameterType="java.util.List" resultMap="uncheckedBillDetailsMap" flushCache="true">
+		select * from OSBillDetailsTemp
+		<where>
+			foodid in
+			<foreach collection="list" open="(" close=")" index="index" item="item" separator=",">
+				#{item.id}
+			</foreach>
+		</where>
+	</select>
+	
+	<select id="queryNotFinished" parameterType="TableInfo" resultMap="uncheckedBillDetailsMap" flushCache="true">
+		select OSBillDetailsTemp.* from OSBillDetailsTemp, OSBillTemp
+		<where>
+			OSBillDetailsTemp.state != 2
+			and OSBillDetailsTemp.state != 6
+			and OSBillDetailsTemp.billtempid = OSBillTemp.id
+			<if test="id != null and id != '' and id != '-1'">
+			and OSBillTemp.tableid = #{id}
+			</if>
+		</where>
+	</select>
+
+	<update id="updateTempDetailState" parameterType="UncheckedBillDetails" flushCache="true">
+		update OSBillDetailsTemp
+		<set>
+			state = #{state}
+		</set>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+	
+	<select id="queryBillSpecialRemark" resultMap="billSpecialRemarkMap" flushCache="true">
+		select * from OSBillSpecialRemark
+		order by cast(OSBillSpecialRemark.id as signed)
+	</select>
+	
+	<insert id="insertBillRemark" parameterType="BillSpecialRemark" flushCache="true">
+		insert into OSBillSpecialRemark values (#{id}, #{name})
+	</insert>
+	
+	<delete id="deleteBillRemark" parameterType="BillSpecialRemark" flushCache="true">
+		delete from OSBillSpecialRemark
+		<where>
+			<if test="id != null and id != ''">
+				id = #{id}
+			</if>
+			<if test="name != null and name != ''">
+				or name = #{name}
+			</if>
+		</where>
+	</delete>
+	
+	<update id="updateBillRemark" parameterType="BillSpecialRemark" flushCache="true">
+		update OSBillSpecialRemark
+		<set>
+			<if test="name != null and name != ''">
+				name = #{name}
+			</if>
+		</set>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+	
+	<select id="queryAllCooking" parameterType="FoodInfo" resultMap="allCookingInfoMap" flushCache="true">
+		<![CDATA[
+		select OSBillDetailsTemp.*, OSBillTemp.tableid, OSBillTemp.starttime, OSBillTemp.remark as billremark
+		from OSBillDetailsTemp, OSFood, OSBillTemp
+		where OSBillDetailsTemp.foodid in (select OSFood.id from OSFood where OSFood.cookby = #{cookby})
+		and OSBillDetailsTemp.foodid = OSFood.id 
+		and OSBillTemp.id = OSBillDetailsTemp.billtempid
+		and OSBillDetailsTemp.state != 2
+		and OSBillDetailsTemp.state != 6
+		]]>
+	</select>
+	
+	<delete id="deleteBillTemp" parameterType="UncheckedBill" flushCache="true">
+		delete from OSBillTemp 
+		<where>
+			<if test="tableid != null and tableid != ''">
+				tableid = #{tableid}
+			</if>
+			<if test="id != null and id != ''">
+				and id = #{id}
+			</if>
+		</where>
+	</delete>
+	
+	<insert id="generateNewBill" parameterType="CheckedBill" flushCache="true">
+		insert into OSBill values (#{id}, #{runningnumber}, #{type}, #{originalprice}, #{discount},
+		#{deduction}, #{realprice}, #{starttime}, now(), #{tableid}, #{waitername}, #{people}, #{remark})
+	</insert>
+
+	<insert id="generateNewBillDetails" parameterType="CheckedBillDetails" flushCache="true">
+		insert into OSBillDetails values (#{id}, #{billid}, #{foodname}, #{amount}, #{price}, #{remark})
+	</insert>
+	
+	<select id="queryBillmarkListByID" parameterType="BillSpecialRemark" resultMap="billSpecialRemarkMap" flushCache="true">
+		select * from OSBillSpecialRemark where id like '%${id}%'
+		order by cast(OSBillSpecialRemark.id as signed)
+	</select>
+	
+	<select id="queryDiscount" parameterType="Discount" resultMap="discountMap" flushCache="true">
+		select * from OSDiscount
+	</select>
+	
+	<select id="queryCurrentReconciliations" resultMap="accountReconciliationMap" flushCache="true">
+		select * from OSAccountReconciliation where currentEdit = 1
+	</select>
+	
+	<insert id="insertReconciliations" parameterType="AccountReconciliation" flushCache="true">
+		insert into OSAccountReconciliation values 
+		(#{id}, #{pic}, now(), #{receivables}, #{paidinCapital}, #{balance}, #{currentEdit})
+	</insert>
+	
+	<update id="updateReconciliations" parameterType="AccountReconciliation" flushCache="true">
+		update OSAccountReconciliation
+		<set>
+			currentEdit = #{currentEdit}
+		</set>
+		where id = #{id}
+	</update>
+	
+	<resultMap type="ReconciliationBill" id="reconciliationBillMap">
+		<id property="id" column="id" />
+		<result property="runningnumber" column="runningnumber" />
+		<result property="type" column="type" />
+		<result property="originalprice" column="originalprice" />
+		<result property="discount" column="discount" />
+		<result property="deduction" column="deduction" />
+		<result property="realprice" column="realprice" />
+		<result property="starttime" column="starttime" />
+		<result property="endtime" column="endtime" />
+		<result property="tableid" column="tableid" />
+		<result property="waitername" column="waitername" />
+		<result property="people" column="people" />
+		<result property="remark" column="remark" />
+		<result property="cash" column="cash" />
+		<result property="card" column="card" />
+	</resultMap>
+	
+	<select id="queryCheckBillByTime" parameterType="CheckedBill" resultMap="reconciliationBillMap" flushCache="true">
+		select OSBill.* , osbillpayment.cash, osbillpayment.card from OSBill, osbillpayment
+		<where>
+			OSBill.endtime <![CDATA[<]]> now() 
+			and OSBill.id = osbillpayment.billid
+			<if test="starttime != null">
+				and OSBill.endtime <![CDATA[>]]> #{starttime}
+			</if>
+		</where>
+	</select>
+	
+	<select id="queryTakeOutBills" resultMap="uncheckedBillMap" flushCache="true">
+		select * from OSBillTemp where type = 1
+	</select>
+	
+	<update id="updateBillTempPeople" parameterType="UncheckedBill" flushCache="true">
+		update OSBillTemp
+		<set>
+		<if test="people > 0">
+			people = #{people}
+		</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateBillTempTable" parameterType="UncheckedBill" flushCache="true">
+		update OSBillTemp
+		<set>
+		<if test="tableid != null and tableid != ''">
+			tableid = #{tableid}
+		</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<select id="cancelTempBill" parameterType="UncheckedBill" resultMap="uncheckedBillDetailsMap" flushCache="true">
+		select * from OSBillDetailsTemp where billtempid = #{id} and state in (2, 4, 5, 6)
+	</select>
+	
+	<update id="mergeExistedBillDetails" parameterType="TableInfo" flushCache="true">
+		update OSBillDetailsTemp
+		<set>
+			OSBillDetailsTemp.billtempid = #{billid}
+		</set>
+		<where>
+			OSBillDetailsTemp.id in
+			(select id from 
+			(select OSBillDetailsTemp.id from OSBillDetailsTemp, OSBillTemp 
+			<where>
+				OSBillTemp.id = OSBillDetailsTemp.billtempid and OSBillTemp.tableid in 
+				<foreach collection="ids" item="item" index="index" open="(" close=")" separator=",">
+					#{item}
+				</foreach>
+			</where>
+			) xx)
+		</where>
+	</update>
+	
+	<select id="queryBillTempByTables" parameterType="java.util.List" resultMap="uncheckedBillMap" flushCache="true">
+		select * from OSBillTemp
+		<where>
+			tableid in
+			<foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+		</where>
+	</select>
+	
+	<delete id="deleteBillTempByTables" parameterType="java.util.List" flushCache="true">
+		delete from OSBillTemp
+		<where>
+			tableid in
+			<foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+		</where>
+	</delete>
+
+	<delete id="deleteBillTempDetails" parameterType="java.util.List" flushCache="true">
+		delete from OSBillDetailsTemp
+		<where>
+			id in 
+			<foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+				#{item.id}
+			</foreach>
+		</where>
+	</delete>
+	
+	<update id="updateBillTempDetails" parameterType="java.util.List" flushCache="true">
+		update OSBillDetailsTemp
+		<set>
+			<trim prefix="amount = case" suffix="end,">
+				<foreach collection="list" item="item"  index="index">
+					<if test="item.amount > 0">
+						when id = #{item.id} then #{item.amount} 
+					</if>
+		      	</foreach>
+	        </trim>
+	        <trim prefix="remark = case" suffix="end,">
+				<foreach collection="list" item="item"  index="index">
+					<if test="item.remark != null">
+						when id = #{item.id} then #{item.remark} 
+					</if>
+		      	</foreach>
+	        </trim>
+		</set>
+		<where>
+		id in 
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.id}
+		</foreach>
+		</where>
+	</update>
+	
+	<update id="updateMaxDiscount" parameterType="Discount" flushCache="true">
+		update OSDiscount
+		<set>
+			<if test="discount >= 0">
+				discount = #{discount},
+			</if>
+			<if test="deduction >= 0">
+				deduction = #{deduction},
+			</if>
+		</set>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+	
+	<insert id="createMaxDiscount" parameterType="Discount" flushCache="true">
+		insert into OSDiscount values (#{id}, #{discount}, #{deduction}, #{type})
+	</insert>
+	
+	<select id="checkBillDetailsCheckoutState" parameterType="UncheckedBillDetails" resultMap="uncheckedBillDetailsMap" flushCache="true">
+		select * from OSBillDetailsTemp where billtempid = #{billtempid} and state not in (#{state})
+	</select>
+	
+	<select id="queryDishStatistics" parameterType="StatisticsCondition" resultMap="dishStatisticsMap" flushCache="true">
+		select OSBillDetails.foodname, sum(OSBillDetails.amount) as amount from OSBillDetails, OSBill 
+		<where>
+			OSBillDetails.billid = OSBill.id
+			<if test="starttime != null">
+				and OSBill.endtime >= #{starttime}
+			</if>
+			<if test="endtime != null">
+			<![CDATA[
+				and date_format(OSBill.endtime,'%Y-%m-%d') <= #{endtime}
+			]]>
+			</if>
+		</where>
+		group by OSBillDetails.foodname 
+		order by amount desc
+	</select>
+	
+	<resultMap type="DailySaleStatistics" id="dailySaleStatisticsMap">
+		<id property="saledate" column="saledate" />
+		<result property="sales" column="sales" />
+		<result property="customers" column="customers" />
+		<result property="average" column="average" />
+	</resultMap>
+	
+	<select id="querySaleStatistics" parameterType="StatisticsCondition" resultMap="dailySaleStatisticsMap" flushCache="true">
+		select 
+		date_format(OSBill.endtime,'%Y-%m-%d') as saledate, 
+		round(sum(OSBill.realprice), 2) as sales, sum(OSBill.people) as customers, 
+		round(sum(OSBill.realprice)/sum(OSBill.people), 2) as average
+		from OSBill
+		<where>
+			<if test="starttime != null">
+				date_format(OSBill.endtime,'%Y-%m-%d') >= #{starttime}
+			</if>
+			<if test="endtime != null">
+			<![CDATA[
+				and date_format(OSBill.endtime,'%Y-%m-%d') <= #{endtime}
+			]]>
+			</if>
+		</where>
+		group by saledate
+		order by saledate asc
+	</select>
+	
+	<resultMap type="TotalSaleStatistics" id="totalSaleStatisticsMap">
+		<id property="totalsales" column="totalsales" />
+		<result property="totalcustomers" column="totalcustomers" />
+		<result property="totalaverage" column="totalaverage" />
+	</resultMap>
+	
+	<select id="queryTotalSaleStatistics" parameterType="StatisticsCondition" resultMap="totalSaleStatisticsMap" flushCache="true">
+		select 
+		round(sum(OSBill.realprice), 2) as totalsales, sum(OSBill.people) as totalcustomers, 
+		round(sum(OSBill.realprice)/sum(OSBill.people), 2) as totalaverage
+		from OSBill
+		<where>
+			<if test="starttime != null">
+				date_format(OSBill.endtime,'%Y-%m-%d') >= #{starttime}
+			</if>
+			<if test="endtime != null">
+			<![CDATA[
+				and date_format(OSBill.endtime,'%Y-%m-%d') <= #{endtime}
+			]]>
+			</if>
+		</where>
+	</select>
+	
+	<select id="queryWorkingDetailsViaTable" parameterType="TableInfo" resultMap="uncheckedBillDetailsMap" flushCache="true">
+		select OSBillDetailsTemp.* from
+		OSBillTemp, OSBillDetailsTemp
+		where OSBillTemp.tableid = #{id}
+		and OSBillTemp.id = OSBillDetailsTemp.billtempid
+		and OSBillDetailsTemp.state not in ('1','7')
+	</select>
+	
+	<select id="queryUrgentDetailsViaTable" parameterType="TableInfo" resultMap="uncheckedBillDetailsMap" flushCache="true">
+		select OSBillDetailsTemp.* from
+		OSBillTemp, OSBillDetailsTemp
+		where OSBillTemp.tableid = #{id}
+		and OSBillTemp.id = OSBillDetailsTemp.billtempid
+		and OSBillDetailsTemp.state = '7'
+	</select>
+	
+	<resultMap type="BillPayment" id="billPaymentMap">
+		<id property="id" column="id" />
+		<result property="billid" column="billid" />
+		<result property="cash" column="cash"/>
+		<result property="card" column="card"/>
+	</resultMap>
+	
+	<insert id="insertBillPayment" parameterType="BillPayment" flushCache="true">
+		insert into osbillpayment values (#{id}, #{billid}, #{cash}, #{card})
+	</insert>
+	
+	<select id="queryBillPayment" parameterType="BillPayment" resultMap="billPaymentMap" flushCache="true">
+		select * from osbillpayment
+		<where>
+			<if test="billid != null and billid != ''">
+				billid = #{billid}
+			</if>
+		</where>
+	</select>
+</mapper>

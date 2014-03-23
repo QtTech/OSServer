@@ -1,0 +1,136 @@
+<script id="menulist_template"  type="text/x-jsmart-tmpl">
+	<div id="projectListDiv">
+		<table class="grid">
+			<tr class="thead">
+				<th width="40" align="center"><input id="selectAllMenu" type="checkbox" /></th>
+				<th width="210" align="center">{$swan->fmt("menuname")}</th>
+				<th width="90" align="center">{$swan->fmt("menunumber")}</th>
+				<th width="140" align="center">{$swan->fmt("menudefaultcount")}</th>
+				<th width="140" align="center">{$swan->fmt("menuprice")}</th>
+				<th width="80" align="center">{$swan->fmt("menutype")}</th>
+				<th width="125" align="center">{$swan->fmt("operation")}</th>
+			</tr>
+			{* if $totalPage gt 0 *}
+			{if $pageData != 'f,a,i,l,u,r,e' and $totalPage gt 0}
+			{foreach $pageData as $i => $data}
+			<tr class="tbody">
+				<td><input type="checkbox" class="viewselect" menuid="{$data.id}" /></td>
+				<td class="center_align"><p class="td_content">{$data.name}</p></td>
+				<td class="center_align"><p class="td_content">{$data.number}</p></td>
+				{if $data.default_count ne 1}
+					<td class="center_align"><p class="td_content">{$swan->fmt("yes")}</p></td>
+				{else}
+					<td class="center_align"><p class="td_content">{$swan->fmt("no")}</p></td>
+				{/if}
+				<td class="center_align"><p class="td_content">{$data.price}</p></td>
+				{if $data.cookby eq 0}
+					<td class="center_align"><p class="td_content">{$swan->fmt("menufood")}</p></td>
+				{else}
+					<td class="center_align"><p class="td_content">{$swan->fmt("menudrink")}</p></td>
+				{/if}
+				<td align="center">
+					<input type="button" title="{$swan->fmt("change")}" class="viewchange btn_change_out" 
+						onmouseout="this.className='viewchange btn_change_out'" 
+						onmousedown="this.className='viewchange btn_change_out btn_change_down'"
+						menuid="{$data.id}" />
+					<input type="button" title="{$swan->fmt("remove")}" class="viewremove btn_remove_out" 
+						onmouseout="this.className='viewremove btn_remove_out'" 
+						onmousedown="this.className='viewremove btn_remove_out btn_remove_down'"
+						menuid="{$data.id}" />
+				</td>
+			</tr>
+			{foreachelse}
+			<tr class="tbody">
+				<td class="td_content" colspan="7" style="text-align:center">{$swan->fmt("nodata")}</td>
+			</tr>
+			{/foreach}
+			{/if}
+		</table>
+	</div>
+
+{* 分页控件 *}
+{if $isPager and $totalPage gt 1}
+{$j = 0}
+<dd class="navBar" forPagination="{$id}">
+	<table border="0" cellpadding="0" cellspacing="0" width="230" class="navTable">
+		{if $currentPage <= 1}
+		{if $totalPage < 1}
+		{elseif $currentPage == $totalPage}
+		<tr valign="top">
+			<td width="40"><input type="button" class="firstBtn"></td>
+			<td width="40"><input type="button" class="prevBtn"></td>
+			<td width="40"><input type="button" class="nextBtn"></td>
+			<td width="40"><input type="button" class="lastBtn"></td>
+			<td width="auto">
+				<select operate="gotoPage" class="goTo">
+					{while ++$j <= $totalPage}
+						{if $j eq $currentPage}
+						<option value="{$j}" selected="selected">{$j}/{$totalPage}</option>
+						{else}
+						<option value="{$j}">{$j}/{$totalPage}</option>
+						{/if}
+					{/while}
+				</select>
+			</td>
+		</tr>
+		{else}
+		<tr valign="top">
+			<td width="40"><input type="button" class="firstBtn"></td>
+			<td width="40"><input type="button" class="prevBtn"></td>
+			<td width="40"><input type="button" class="nextBtn" operate="nextPage"></td>
+			<td width="40"><input type="button" class="lastBtn" operate="lastPage"></td>
+			<td width="auto">
+				<select operate="gotoPage" class="goTo">
+					{while ++$j <= $totalPage}
+						{if $j eq $currentPage}
+						<option value="{$j}" selected="selected">{$j}/{$totalPage}</option>
+						{else}
+						<option value="{$j}">{$j}/{$totalPage}</option>
+						{/if}
+					{/while}
+				</select>
+			</td>
+		</tr>
+		{/if}
+		{elseif $currentPage >= $totalPage}
+		<tr valign="top">
+			<td width="40"><input type="button" class="firstBtn" operate="firstPage"></td>
+			<td width="40"><input type="button" class="prevBtn" operate="prevPage"></td>
+			<td width="40"><input type="button" class="nextBtn"></td>
+			<td width="40"><input type="button" class="lastBtn"></td>
+			<td width="auto">
+				<select operate="gotoPage" class="goTo">
+					{while ++$j <= $totalPage}
+						{if $j eq $currentPage}
+						<option value="{$j}" selected="selected">{$j}/{$totalPage}</option>
+						{else}
+						<option value="{$j}">{$j}/{$totalPage}</option>
+						{/if}
+					{/while}
+				</select>
+			</td>
+		</tr>
+		{else}
+		<tr valign="top">
+			<td width="40"><input type="button" class="firstBtn" operate="firstPage"></td>
+			<td width="40"><input type="button" class="prevBtn" operate="prevPage"></td>
+			<td width="40"><input type="button" class="nextBtn" operate="nextPage"></td>
+			<td width="40"><input type="button" class="lastBtn" operate="lastPage"></td>
+			<td width="auto">
+				<select operate="gotoPage" class="goTo">
+					{while ++$j <= $totalPage}
+						{if $j eq $currentPage}
+						<option value="{$j}" selected="selected">{$j}/{$totalPage}</option>
+						{else}
+						<option value="{$j}">{$j}/{$totalPage}</option>
+						{/if}
+					{/while}
+				</select>
+			</td>
+		</tr>
+		{/if}
+	</table>
+</dd>
+{else}
+{/if}
+</script>

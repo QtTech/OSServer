@@ -1,0 +1,25 @@
+@CHARSET "UTF-8";
+
+.sheet label.static{width:100px;display:inline-block;}
+
+.sheet input{border:1px solid #dcd3c2;}
+
+.sheet input.btn_confirm_out{border:0px;padding:2px 5px;height:25px;width:25px;}
+.sheet input.btn_confirm_down{border:0px;padding:2px 5px;height:25px;width:25px;}
+.btn_confirm_out{
+	width:24px; 
+	height:24px; 
+	border:0; 
+	background:url(/OrderingSystem/image/device_info/btn_confirm_out.png) no-repeat;
+	cursor:pointer;
+	vertical-align: middle;
+}
+
+.btn_confirm_down{
+	width:24px; 
+	height:24px; 
+	border:0; 
+	background:url(/OrderingSystem/image/device_info/btn_confirm_down.png) no-repeat;
+	cursor:pointer;
+	vertical-align: middle;
+}

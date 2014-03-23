@@ -1,0 +1,87 @@
+﻿/*file容器样式*/
+.fileUploadBtn {
+	width:90px;
+	height:30px;
+	overflow:hidden;
+	display:inline-block;
+	border:1px solid #BEBEBE;
+	background:url(../images/fu_btn.gif) left top no-repeat;
+	float:left;
+	margin:5px;
+}
+.fileUploadBtn:hover {
+	background-color:#FFFFEE;
+	background-position:0 -30px;
+}
+/*file设为透明，并覆盖整个触发面*/
+.fileUploadBtn .newFileUpload {
+	margin-left:-350px;
+	font-size:30px;
+	cursor:pointer;
+	filter:alpha(opacity=0);
+	opacity:0;
+}
+/*取消点击时的虚线框*/
+.fileUploadBtn, .fileUploadBtn .newFileUpload {
+	outline:none;/*ff*/
+	hide-focus:expression(this.hideFocus=true);/*ie*/
+}
+
+.fileUploadBtn .fileUploading{
+    position:absolute;
+    top:-10000px;
+}
+
+.swan_upload_processBar
+{
+    width:100px;
+    height:10px;
+    display:inline-block;
+    background-color:Blue;
+}
+
+.swan_upload_processBar span
+{
+    width:1%;
+    height:10px;
+    display:inline-block;
+    background-color:Red;
+}
+
+.swan_upload_loading{
+	display:none;
+	padding:0px;
+	width:60px;
+	height:29px;
+	padding-left:35px;
+	background:url(../images/PC_loading_2.gif) left top no-repeat;
+	float:left;
+	margin:5px;
+}
+
+.swan_upload_percent{
+	display:none;
+	padding:0px;
+	width:29px;
+	height:29px;
+	line-height:29px;
+}
+
+.swan_upload_result{
+	display:none;
+	padding:0px;
+	width:100px;
+	height:22px;
+	line-height:22px;
+	padding-left:25px;
+	float:left;
+	margin-top:10px;
+}
+
+.swan_upload_result_success{
+    background:url(../images/onSuccess.gif) left top no-repeat;
+}
+
+.swan_upload_result_error{
+    background:url(../images/onError.gif) left top no-repeat;
+}

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.bronze.ordersystem.attachment.dao.IAttachmentDao">
+	<resultMap type="BillAttachment" id="billAttachmentMap">
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="price" column="price" />
+		<result property="type" column="type" />
+	</resultMap>
+	
+	<select id="queryAttachments" resultMap="billAttachmentMap" flushCache="true">
+		select * from OSAttachment
+	</select>
+	
+	<select id="queryAttachmentsByName" parameterType="BillAttachment" resultMap="billAttachmentMap" flushCache="true">
+		select * from OSAttachment where name like '%${name}%'
+	</select>
+	
+	<delete id="deleteAttachment" parameterType="BillAttachment" flushCache="true">
+		delete from OSAttachment where id = #{id}
+	</delete>
+	
+	<insert id="insertAttachment" parameterType="BillAttachment" flushCache="true">
+		insert into OSAttachment values (#{id}, #{name}, #{price}, #{type})
+	</insert>
+	
+	<select id="queryAttachmentByID" parameterType="BillAttachment" resultMap="billAttachmentMap" flushCache="true">
+		select * from OSAttachment where id = #{id}
+	</select>
+	
+	<update id="updateAttachment" parameterType="BillAttachment" flushCache="true">
+		update OSAttachment
+		<set>
+			type = #{type},
+			price = #{price},
+			<if test="name != null and name != ''">
+				name = #{name},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+</mapper>

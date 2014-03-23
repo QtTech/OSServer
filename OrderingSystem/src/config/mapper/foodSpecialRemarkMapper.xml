@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.bronze.ordersystem.food.dao.IFoodSpecialRemarkDao">
+	<resultMap type="FoodSpecialRemark" id="foodSpecialRemarkMap">
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="foodid" column="foodid" />
+	</resultMap>
+	
+	<resultMap type="FoodRemarkWithName" id="foodRemarkWithNameMap">
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="foodid" column="foodid" />
+		<result property="foodname" column="foodname" />
+	</resultMap>
+
+	<select id="queryFoodSpecialRemark" resultMap="foodRemarkWithNameMap" flushCache="true">
+		select OSFoodSpecialRemark.*, OSFood.name as foodname
+		from OSFoodSpecialRemark, OSFood where OSFoodSpecialRemark.foodid = OSFood.id
+	</select>
+	
+	<select id="queryFoodSpecialRemarkByFoodId" parameterType="FoodInfo" resultMap="foodSpecialRemarkMap" flushCache="true">
+		select * from OSFoodSpecialRemark where foodid = #{id}
+	</select>
+	
+	<insert id="insertFoodRemark" parameterType="FoodSpecialRemark" flushCache="true">
+		insert into OSFoodSpecialRemark values (#{id}, #{name}, #{foodid})
+	</insert>
+	
+	<delete id="deleteFoodRemark" parameterType="FoodSpecialRemark" flushCache="true">
+		delete from OSFoodSpecialRemark 
+		<where>
+			id = #{id}
+		</where>
+	</delete>
+	
+	<select id="queryFoodmarkListByName" parameterType="FoodSpecialRemark" resultMap="foodRemarkWithNameMap" flushCache="true">
+		select OSFoodSpecialRemark.*, OSFood.name as foodname
+		from OSFoodSpecialRemark, OSFood where OSFoodSpecialRemark.foodid = OSFood.id and OSFood.name like '%${foodid}%'
+	</select>
+	
+	<select id="queryFoodRemarkName" parameterType="FoodSpecialRemark" resultMap="foodRemarkWithNameMap" flushCache="true">
+		select OSFoodSpecialRemark.*, OSFood.name as foodname
+		from OSFoodSpecialRemark, OSFood where OSFoodSpecialRemark.foodid = OSFood.id and 
+		OSFoodSpecialRemark.id = #{id}
+	</select>
+	
+	<update id="updateFoodRemark" parameterType="FoodSpecialRemark" flushCache="true">
+		update OSFoodSpecialRemark
+		<set>
+			<if test="name != null and name != ''">
+				name = #{name}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+</mapper>

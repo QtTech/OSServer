@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<link rel="shortcut icon" href="/OrderingSystem/image/orderingsystem.ico"/>
+<link href="/OrderingSystem/style/common/multi-select.css" media="screen" rel="stylesheet" type="text/css">
+<link type="text/css" rel="stylesheet" media="screen" href="/OrderingSystem/style/common/common.css" />
+<link type="text/css" rel="stylesheet" href="/OrderingSystem/style/menu/menuinfo.css" />
+<meta charset="UTF-8">
+
+<script type="text/javascript" src="/OrderingSystem/swan/smartos.js"></script>
+<script type="text/javascript" src="/OrderingSystem/script/common/common.js"></script>
+<script type="text/javascript" src="/OrderingSystem/script/menu/menuinfo.js"></script>
+<title>OrderingSystem</title>
+</head>
+<body style="width:800px; min-width:800px; max-width:800px;">
+	<div class="page_ctn">
+		<div class="content_ctn">
+			<div id="menuConfig" class="menu_sheet">
+				<div class="menu_sheet">
+					<form id="editForm">
+						<table width="100%">
+							<tr>
+								<td class="labelStyle" id="menuName"></td>
+								<td><input type="text" id="menuNamevalue" /></td>
+							
+								<td class="labelStyle" id="menuOrdered"></td>
+								<td>
+									<select id="menuOrderedvalue" class="labelStyle">
+										<option value="1" selected="selected" id="menuOrderedvalue1"></option>
+										<option value="0" id="menuOrderedvalue0"></option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td class="labelStyle" id="menuNumber"></td>
+								<td>
+									<input type="text" id="menuNumbervalue" readonly="readonly"/>
+								</td>
+								<td class="labelStyle" id="menuCookedBy"></td>
+								<td>
+									<select class="labelStyle" id="menuCookedByvalue">
+										<option value="0" id="menuCookedByvalue0"></option>
+										<option value="1" id="menuCookedByvalue1"></option>
+									</select>
+								</td>
+							</tr>
+
+							<tr>
+								<td class="labelStyle" id="menuPrice"></td>
+								<td>
+									<input type="text" id="menuPricevalue" />
+								</td>
+								<td class="labelStyle" id="menuDefaultCount"></td>
+								<td>
+									<select class="labelStyle" id="menuDefaultCountvalue">
+										<option value="1" id="menuDefaultCountvalue1"></option>
+										<option value="2" id="menuDefaultCountvalue0"></option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td class="labelStyle" id="menuCategory"></td>
+								<td>
+									<select id="menuCategoryvalue" multiple="multiple">
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td class="labelStyle" id="menuDescription"></td>
+								<td class="td_cseven" colspan="3">
+									<textarea id="menuDescriptionvalue"></textarea>
+								</td>
+							</tr>
+							<tr>
+								<td class="labelStyle" id="menuDetails"></td>
+								<td class="td_cseven" colspan="3">
+									<textarea id="menuDetailsvalue"></textarea>
+								</td>
+							</tr>
+						</table>
+					</form>
+				</div>
+				<div id="sheetButton" class="sheetButtonSet">
+					<button id="btnMenuConfirm"></button>
+					<button id="btnMenuCancel"></button>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,57 @@
+﻿/*file容器样式*/
+/*.swanFileUploadBtn {
+	width:90px;
+	height:30px;
+	overflow:hidden;
+	display:block;
+	border:1px solid #BEBEBE;
+	background:url(../images/fu_btn.gif) left top no-repeat;
+}
+.swanFileUploadBtn:hover {
+	background-color:#FFFFEE;
+	background-position:0 -30px;
+}*/
+
+/*file设为透明，并覆盖整个触发面*/
+.swanFileUploadBtn .swanNewFileUpload {
+	margin-left:-350px;
+	margin-top:-22px;
+	font-size:30px;
+	cursor:pointer;
+	filter:alpha(opacity=0);
+	opacity:0;
+}
+/*取消点击时的虚线框*/
+.swanFileUploadBtn, .swanFileUploadBtn .swanNewFileUpload {
+	outline:none;/*ff*/
+	hide-focus:expression(this.hideFocus=true);/*ie*/
+}
+
+.swanFileUploadBtn .swanOldFileUpload{
+    position:absolute;
+    top:-10000px;
+}
+
+.swan_upload_processBar
+{
+    width:100px;
+    height:10px;
+    display:inline-block;
+    background-color:Blue;
+}
+
+.swan_upload_processBar span
+{
+    width:1%;
+    height:10px;
+    display:inline-block;
+    background-color:Red;
+}
+
+.swanFileUploadError
+{
+    color: red;
+    margin-left: 220px;
+    position:absolute;
+    margin-top: -18px;
+}

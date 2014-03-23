@@ -1,0 +1,37 @@
+#searchBar{
+	padding:0 0 0 40px;
+}
+
+#search{
+	border:0;
+	padding:9px 0 0 0;
+}
+
+.content_ctn button {
+	width: 100px;	
+	background: white;
+	padding: 1px 1px 1px 1px;
+	border: 1px solid #c0c4cd;
+	text-align: center;
+}
+
+.sheet label.static {
+	width: 80px;	
+}
+
+.sheet select.static {
+	width: 80px;	
+}
+
+#menuInfoBody{
+	background:#f7f5f3;
+}
+
+#projectInfoTable table{
+  	/* border-collapse:collapse; */
+}
+
+#projectInfoTable table,th, td
+  {
+  /* border: 1px solid black; */
+  }

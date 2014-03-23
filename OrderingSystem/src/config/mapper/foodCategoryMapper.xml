@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.bronze.ordersystem.food.dao.IFoodCategoryDao">
+	<resultMap type="FoodCategory" id="foodCategoryMap">
+		<id property="id" column="id" />
+		<result property="foodid" column="foodid" />
+		<result property="categoryid" column="categoryid" />
+		<result property="index" column="index" />
+	</resultMap>
+
+	<resultMap type="java.lang.String" id="foodCategoryStringMap">
+		<result column="categoryid" />
+	</resultMap>
+	
+	<select id="queryFoodCategory" resultMap="foodCategoryMap" flushCache="true">
+		select * from OSFoodCategory
+		order by OSFoodCategory.`index` asc
+	</select>
+	
+	<select id="queryFoodCategoryByFoodId" parameterType="FoodInfo" resultMap="foodCategoryMap" flushCache="true">
+		select * from OSFoodCategory where foodid = #{id}
+		order by OSFoodCategory.`index` asc
+	</select>
+	
+	<insert id="addCategoryList" parameterType="java.util.List" flushCache="true">
+		insert into OSFoodCategory values
+		<foreach collection="list" close="" separator="," open="" index="index" item="item">
+			(#{item.id}, #{item.foodid}, #{item.categoryid}, #{item.index})
+		</foreach>
+	</insert>
+	
+	<select id="queryFoodCategoryByFoodID" parameterType="FoodInfo" resultMap="foodCategoryStringMap" flushCache="true">
+		select categoryid from OSFoodCategory where foodid = #{id} 
+		order by OSFoodCategory.`index` asc
+	</select>
+	
+	<delete id="deleteCategoryByFoodID" parameterType="FoodInfo" flushCache="true">
+		delete from OSFoodCategory where foodid = #{id}
+	</delete>
+	
+	<select id="queryCategoryByCID" parameterType="FoodCategory" resultMap="foodCategoryMap" flushCache="true">
+		select * from OSFoodCategory
+		<where>
+			categoryid = #{categoryid}
+			<if test="foodid != null and foodid != ''">
+				and foodid = #{foodid}
+			</if>
+		</where>
+		order by OSFoodCategory.`index` asc
+	</select>
+	
+	<delete id="deleteCategoryByCID" parameterType="FoodCategory" flushCache="true">
+		delete from OSFoodCategory where foodid = #{foodid} and categoryid = #{categoryid}
+	</delete>
+	
+	<update id="updateIndex" parameterType="FoodCategory" flushCache="true">
+		update OSFoodCategory
+		<set>
+			`index` = #{index}
+		</set>
+		<where>
+			categoryid = #{categoryid} and foodid = #{foodid}
+		</where>
+	</update>
+	
+	<select id="queryCategoryIndex" parameterType="FoodCategory" resultType="string" flushCache="true">
+		select `index` from OSFoodCategory
+		<where>
+			<if test="categoryid != null and categoryid != ''">
+				categoryid = #{categoryid}
+			</if>
+		</where>
+		order by `index`
+	</select>
+</mapper>

@@ -1,0 +1,19 @@
+#foodrecommendConfig{
+	margin: 0;
+	padding: 0;
+	background:#f7f5f3;
+}
+
+.foodrecommend_sheet, .foodrecommend_sheet table{ margin:0px 0;}
+.foodrecommend_sheet table{border-bottom:1px solid #bee2fc; border-top:1px solid #bee2fc; position:absolute; width:300px; float:left; word-warp:break-word; table-layout:fixed;}
+.foodrecommend_sheet table tr{vertical-align:middle;}
+.foodrecommend_sheet table td{height:20px; font:400 12px Arial;line-height:18px;word-break:break-all; vertical-align:middle;}
+.foodrecommend_sheet table td.labelStyle{width:75px; color:#000; text-align:right; padding:2px 5px 0px 5px;}
+.foodrecommend_sheet table td{padding:2px 5px 2px 5px;}
+.foodrecommend_sheet input{width:210px; height:20px; border: 1px solid #c0c4cd; font:400 12px Arial;}
+.foodrecommend_sheet select{width:210px; height:22px; border: 1px solid #c0c4cd; font:400 12px Arial;}
+.foodrecommend_sheet input.dateStyle{width:97px;}
+
+.foodrecommendsheetButtonSet{float:right;position: relative;top:80px;font:400 12px Arial;margin-right:10px;}
+.foodrecommendsheetButtonSet input{width:49px; height:22px; line-height: 22px;border:0; cursor:pointer; font-size:12px; font-family:Arial;margin:15px 15px 10px 15px;color: #5a7aa1;background: url(../../../image/common/bg_sweet.png) no-repeat -15px -45px;vertical-align: middle;}
+.foodrecommendsheetButtonSet label input:hover{padding:1px 1px;color: #3a4968;}

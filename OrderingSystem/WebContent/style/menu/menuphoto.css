@@ -1,0 +1,93 @@
+#menuPhotoBody {
+	height:310px;
+	display:inline-block;  
+}
+
+#deployDiagramdp {
+	margin: 0 20px;
+	width: 605px;
+	height: 295px;
+	padding: 0;
+	border: 8px solid #ccc;
+	position: absolute;
+	overflow: hidden;
+	text-align: center;
+	display:inline-block;  
+}
+
+#deployDiagramdp img {
+	max-width:605px;
+	max-height:295px;
+	width:expression(onload=function(){if (this.offsetWidth>this.offsetHeight){
+	this.style.width=(this.offsetWidth > 784)?'784px':'auto'}
+	{this.style.height=(this.offsetHeight < 784)?'auto':'784px'}
+	});
+}
+
+#deployDiagramgp {
+	margin: 0 730px;
+	width: 605px;
+	height: 295px;
+	padding: 0;
+	border: 8px solid #ccc;
+	position: absolute;
+	overflow: hidden;
+	text-align: center;
+	display:inline-block;  
+}
+
+#deployDiagramgp img {
+	max-width:605px;
+	max-height:295px;
+	width:expression(onload=function(){if (this.offsetWidth>this.offsetHeight){
+	this.style.width=(this.offsetWidth > 784)?'784px':'auto'}
+	{this.style.height=(this.offsetHeight < 784)?'auto':'784px'}
+	});
+}
+
+#uploadDivdp, #uploadDivgp {
+	position:absolute;
+	top:30%;
+	left:50%;
+	width:128px; 
+	height:128px; 
+	margin-left: -64px;
+	margin-top: -64px;
+	padding:0;
+	border:0; 
+	z-index:5;
+	background:url(/OrderingSystem/image/common/upload.png) no-repeat;
+	opacity:0.5;
+	filter:alpha(opacity=50);
+	cursor:pointer;
+}
+
+#detailphotos, #generalphotos {
+	position:absolute;
+	left:0;
+	top:0;
+	width:128px;
+	height:128px;
+	font-size:128px;
+	size:0;
+	opacity:0;
+	filter:alpha(opacity=0);
+	outline:none;/*ff*/
+	hide-focus:expression(this.hideFocus=true);/*ie*/
+	cursor:pointer;
+}
+
+#deleteDivgp, #deleteDivdp {
+	display:none;
+	position: absolute;
+	right: 5px;
+	top: 5px;
+	width:32px;
+	height:32px;
+	z-index:6;
+	background:url(/OrderingSystem/image/common/delete32.png) no-repeat;
+/* 	opacity:0.5; */
+/* 	filter:alpha(opacity=50); */
+	cursor:pointer;
+}
+

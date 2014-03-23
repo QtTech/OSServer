@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.bronze.ordersystem.food.dao.IFoodRecommendDao">
+	<resultMap type="FoodRecommend" id="foodRecommendMap">
+		<id property="id" column="id" />
+		<result property="foodid" column="foodid" />
+		<result property="recommendid" column="recommendid" />
+	</resultMap>
+
+	<select id="queryFoodRecommend" resultMap="foodRecommendMap" flushCache="true">
+		select * from OSFoodRecommend
+	</select>
+	
+	<select id="queryFoodRecommendByFoodId" parameterType="FoodInfo" resultMap="foodRecommendMap" flushCache="true">
+		select * from OSFoodRecommend where foodid = #{id}
+	</select>
+	
+	<select id="queryFoodrecommendList" resultMap="foodRecommendMap" flushCache="true">
+		select * from OSFoodRecommend order by foodid
+	</select>
+	
+	<insert id="insertFoodRemark" parameterType="FoodRecommend" flushCache="true">
+		insert into OSFoodRecommend values (#{id}, #{foodid}, #{recommendid})
+	</insert>
+	
+	<delete id="deleteFoodRemark" parameterType="FoodRecommend" flushCache="true">
+		delete from OSFoodRecommend
+		<where>
+			id = #{id}
+		</where>
+	</delete>
+	
+	<select id="queryFoodrecommendListByName" parameterType="FoodRecommend" resultMap="foodRecommendMap" flushCache="true">
+		select OSFoodRecommend.* from OSFoodRecommend, OSFood where OSFood.name like '%${foodid}%' and 
+		OSFoodRecommend.foodid = OSFood.id
+	</select>
+	
+	<select id="queryFoodrecommendListById" parameterType="FoodRecommend" resultMap="foodRecommendMap" flushCache="true">
+		select * from OSFoodRecommend where id = #{id}
+	</select>
+	
+	<update id="updateFoodRecommend" parameterType="FoodRecommend" flushCache="true">
+		update OSFoodRecommend
+		<set>
+			<if test="recommendid != null and recommendid != ''">
+				recommendid = #{recommendid}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+</mapper>

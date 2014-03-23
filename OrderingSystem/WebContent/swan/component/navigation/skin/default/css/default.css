@@ -1,0 +1,14 @@
+﻿@charset "utf-8";
+
+.menu>li{float:left; width:180px; height:48px; line-height:48px; text-align:center; font-size:16px; color:#000000;}
+.menu>li:hover{background:url(../images/bgMain.png) -346px -164px; cursor:pointer;color:#30d3cf;}
+.menu>li:hover>a{color:#30d3cf;}
+
+.menu a{width:180px; height:48px; line-height:48px; text-align:center; font-size:16px; color:#000000; text-decoration:none;}
+
+.subMenu>li{float:left; width:180px; height:48px; line-height:48px; text-align:center; font-size:16px; color:#000000;background-color:#BBBBBB;}
+.subMenu>li:hover{cursor:pointer;color:white;background-color:#30d3cf;}
+.subMenu>li:hover>a{color:#30d3cf;}
+
+
+

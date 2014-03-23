@@ -1,0 +1,14 @@
+﻿<script id="navigation_Default_Template"  type="text/x-jsmart-tmpl">
+		{foreach $menuData as $i => $data}
+          <li>
+		  	<a href="#">{$data.menu}</a>
+			<ul class="subMenu">
+				{foreach $data.children as $j => $c}
+				<li><a href="#">{$c}</a></li>
+				{foreachelse}
+				{/foreach}
+			</ul>
+		  </li>
+		{foreachelse}
+		{/foreach}
+</script>
