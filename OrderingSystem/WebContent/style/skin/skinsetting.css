@@ -1,7 +1,0 @@
-@CHARSET "UTF-8";
-
-.sheet label.static{width:100px;display:inline-block;}
-
-.sheet select.static{width:120px;display:inline-block;padding:0 8px 0 3px;}
-
-.sheet button{margin-left:0px;}
